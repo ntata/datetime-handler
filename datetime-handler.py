@@ -1,6 +1,7 @@
 import flask
 from flask import jsonify
 import datetime
+import pytz
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -20,8 +21,13 @@ def health_check():
 
 # A route to return current date time in hh:mm:ss.microseconds format.
 @app.route('/api/v1/timenow', methods=['GET'])
-def api_all():
+def api_v1():
     return jsonify(datetime.datetime.now().isoformat())
+
+# A route to return current date time in hh:mm:ss.microseconds format.
+@app.route('/api/v2/timenow', methods=['GET'])
+def api_v2():
+    return jsonify(datetime.datetime.now(pytz.timezone('America/Chicago')).isoformat())
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
